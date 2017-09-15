@@ -71,3 +71,27 @@ class DataHandler(object):
         for elem in element:
             if elem:
                 self.print_tree(element=elem, indent=indent+1)
+
+    def get_file_data(self):
+        """ Search for all nodes called file_name and use their text to read files
+        """
+        text_data = ""
+        for file_name in self.root.findall(".//file_name"):
+            text_data += self.read_file(file_name.text)
+        return text_data
+    
+    def get_terms(self):
+        """ Return the terms associated with each data. This function will be updated in the future.
+        """
+        terms = []
+        for term in self.root.findall(".//ftg"):
+            terms.append(term.text)
+        return list(set(terms))
+        
+
+    def read_file(self, file_name):
+        ret = []
+        with open(file_name) as data_file:
+            ret = " ".join([row for row in data_file.readlines()])
+        return ret
+    
