@@ -79,7 +79,14 @@ class DataHandler(object):
         for file_name in self.root.findall(".//file_name"):
             text_data += self.read_file(file_name.text)
         return text_data
-    
+
+    def get_submodels(self):
+        """ Return a list of all files noted in the data
+        """
+        files = [file_name.text for file_name in self.root.findall(".//file_name")]
+        classes = [model_class.text for model_class in self.root.findall(".//model_class")]
+        return [(model_file, model_class) for model_file, model_class in zip(files, classes)]
+
     def get_terms(self):
         """ Return the terms associated with each data. This function will be updated in the future.
         """

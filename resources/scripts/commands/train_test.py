@@ -29,4 +29,4 @@ class TrainTest(Command):
             (trn_data, tst_data) = self.data_handler.divide_random(quota=0.5)
             model = IEM({"-v":self.verbose, "-l":self.logging, "Command":"IEM"})
             model.train(trn_data=trn_data)
-            #result = model.test(tst_data)
+            result = model.test(tst_data=tst_data)
