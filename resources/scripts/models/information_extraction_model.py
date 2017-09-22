@@ -2,11 +2,12 @@ from multiprocessing import Manager
 
 from .hidden_markov_model import HiddenMarkovModel
 from .model_set import ModelSet
-
+from .combi_algorithms import *
 
 class InformationExtractionModel(ModelSet):
     def __init__(self, args):
-        self.model_algorithms = [HiddenMarkovModel]
+        self.model_algorithms = [HiddenMarkovModel, HiddenMarkovModel, HiddenMarkovModel]
+        self.combi_algorithm = HardVoting
         self.model_class = "InformationExtractionModel"
         super(InformationExtractionModel, self).__init__(args)
 

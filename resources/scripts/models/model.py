@@ -1,9 +1,13 @@
+import csv
 from multiprocessing import Process
-from pkg_resources import resource_filename
-from ..support.data_handler import DataHandler
+from os.path import dirname
 
 import numpy as np
-import csv
+from pkg_resources import resource_filename
+from sklearn.externals import joblib
+
+from ..commands.command import Command
+from ..support.data_handler import DataHandler
 
 
 class Model(Process):
@@ -11,8 +15,9 @@ class Model(Process):
     def __init__(self, **kwargs):
         super(Model, self).__init__()
         self.model_data = DataHandler(data_file=kwargs["model_file"])
-        if self.model_data.has(""):
-            self.model
+        self.model = None
+        if self.model_data.has("model_file"):
+            self.model = joblib.load(self.model_data.get("model_file"))
         self.trn_do = False
         self.tst_do = False
         self.prd_do = False
@@ -23,8 +28,10 @@ class Model(Process):
             pass
         elif self.tst_do:
             self.test_process()
+            self.model_data.save()
         elif self.trn_do:
             self.train_process()
+            self.model_data.save()
     
     def train(self, trn_data):
         """ Initialize a training process.
@@ -73,7 +80,7 @@ class Model(Process):
                 word_dictionary[string] = len(keys)
                 int_list.append(len(keys))
                 keys = word_dictionary.keys()
-        self.write_word_dictionary(word_dictionary)            
+        self.write_word_dictionary(word_dictionary)
         return np.array(int_list, dtype=int)
 
     def read_word_dictionary(self):
@@ -92,3 +99,18 @@ class Model(Process):
         with open(resource_filename("resources.data.app_data", "dictionary.csv"), 'w') as dict_file:
             writer = csv.writer(dict_file)
             writer.writerows([[key, value] for key, value in word_dictionary.items()])
+    
+    def save_model(self, model):
+        """ Save a model using joblib dump.
+        """
+        # Does the model allready have a model_file, if so this should be overwriten
+        if self.model_data.has("model_file"):
+            model_file_name = self.model_data.get("model_file")
+        # ... it doesn't we create a new path and save it in the model data
+        else:
+            cmd = Command({"-v":False, "-l":False, "Command":""})
+            model_file_name = cmd.get_next_file(dirname(self.model_data.data_file),
+                                                "hmm_model", "pkl")
+            self.model_data.set_text("model_file", model_file_name)
+        # And write the file
+        joblib.dump(model, model_file_name)

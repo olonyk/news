@@ -14,7 +14,7 @@ class ModelSet(Command):
             model_file = DataHandler(data_file=args["model_file"])
         else:
             # Create a new model set
-            model_file = join(resource_filename("resources.data.app_data", "app_data"), "model_set.xml")
+            model_file = join(resource_filename("resources.data", "app_data"), "model_set.xml")
             self.model_data = DataHandler(data_file=model_file)
             for model_alg in self.model_algorithms:
                 sub_model_file = join(dirname(model_file), "model.xml")

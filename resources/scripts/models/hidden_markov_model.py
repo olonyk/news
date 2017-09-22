@@ -4,13 +4,11 @@ import warnings
 from hmmlearn.hmm import GaussianHMM
 
 import numpy as np
-
 from .model import Model
 
 
 class HiddenMarkovModel(Model):
     def __init__(self, **kwargs):
-        print(kwargs)
         super(HiddenMarkovModel, self).__init__(**kwargs)
     
     def train_process(self):
@@ -22,9 +20,19 @@ class HiddenMarkovModel(Model):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
         warnings.filterwarnings("ignore", category=RuntimeWarning)
         model = GaussianHMM(n_components=2, covariance_type="diag", n_iter=1000).fit(data)
+        # Calculate which component is associated with the target
+        results = model.predict(data)
+        best_acc = 0
+        for i in range(model.n_components):
+            acc = np.sum(np.logical_and(results == i, data[:,0] == 1)) / np.sum(data[:,0])
+            if acc > best_acc:
+                best_acc = acc
+                best_com = i
         warnings.simplefilter("always")
-        self.model_list[self.model_index] = model
-    
+        self.save_model(model)
+        self.model_data.set_text("target_comp", best_com)
+
+
     def test_process(self):
         data = self.data.get_file_data()
         data = self.format_data(data)
@@ -32,15 +40,14 @@ class HiddenMarkovModel(Model):
         data = self.get_XY_columns(data, terms)
         warnings.filterwarnings("ignore", category=DeprecationWarning)
         warnings.filterwarnings("ignore", category=RuntimeWarning)
-        results = self.model_list[self.model_index].predict(data)
+        results = self.model.predict(data)
         warnings.simplefilter("always")
         
-        #np.set_printoptions(threshold=np.nan)
-        #data = np.column_stack([data, results])
-        print("Means and vars of each hidden state")
-        for i in range(self.model_list[self.model_index].n_components):
-            print("{0}th hidden state".format(i))
-            corr = np.sum(np.logical_and(results == i, data[:,0] == 1))
-            tott = np.sum(data[:,0])
-            print("accuracy = {:.04}".format(corr/tott))
-            print()
+        target_comp = int(self.model_data.get("target_comp"))
+        for i in range(self.model.n_components):
+            if target_comp == i:
+                acc = np.sum(np.logical_and(results == i, data[:,0] == 1)) / np.sum(data[:,0])
+                print("Target component: {}".format(acc))
+            else:
+                acc = np.sum(np.logical_and(results == i, data[:,0] != 1)) / np.sum(np.logical_not(data[:,0]))
+                print("Background component: {}".format(acc))

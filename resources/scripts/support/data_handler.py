@@ -44,6 +44,7 @@ class DataHandler(object):
     def save(self):
         """ Save the current tree.
         """
+        print(self.data_file)
         ET.ElementTree(self.root).write(self.data_file)
     
     def divide_random(self, quota=0.5):
@@ -94,11 +95,33 @@ class DataHandler(object):
         for term in self.root.findall(".//ftg"):
             terms.append(term.text)
         return list(set(terms))
-        
 
     def read_file(self, file_name):
+        """ Read and return the file_name
+        """
         ret = []
         with open(file_name) as data_file:
             ret = " ".join([row for row in data_file.readlines()])
         return ret
-    
+
+    def has(self, name):
+        """ Test if name is in the data
+        """
+        return len(self.root.findall(name)) > 0
+
+    def get(self, name):
+        """ Find and return the value of name.
+        """
+        print(self.root.find(name).text)
+        return self.root.find(name).text
+
+    def set_text(self, name, text):
+        """ Set the text of name.
+        """
+        element = self.root.find(name)
+        if element:
+            element.text = str(text)
+        else:
+            element=ET.Element(name)
+            element.text=text
+            self.root.append(element)
