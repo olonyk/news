@@ -1,0 +1,4 @@
+<!ELEMENT date (#PCDATA)>
+  <!-- Attributes for location, default is "absolute date" -->
+  <!ATTLIST date type (date|time|duration) #REQUIRED
+              rel (absolute|relative) absolute>

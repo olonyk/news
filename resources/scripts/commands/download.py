@@ -76,3 +76,13 @@ class DownloadProcess(Process):
         if isinstance(element, Comment):
             return False
         return True
+"""
+<company name="Volvo">
+        <sighting>
+            <date>2017-10-01</date>
+            <time>00:00:00</time>
+            <site>DN ekonomi</site>
+            <url>https://www.dn.se/ekonomi/</url>
+        </sighting>
+    </company>
+"""

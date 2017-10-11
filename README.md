@@ -28,5 +28,5 @@ This project currently depends on the following packages:
 
 These dependencies can be installed with:
 ```sh
-$ sudo pip3 install numpy hmmlearn scikit-learn scipy docopt
+$ sudo pip3 install numpy hmmlearn scikit-learn scipy docopt webstruct
 ```

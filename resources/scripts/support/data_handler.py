@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from os.path import isfile
+from collections import Counter
 import random
 
 class DataHandler(object):
@@ -23,9 +24,7 @@ class DataHandler(object):
     def initialize(self):
         """ Define and initialize an empty xml document and return the root node.
         """
-        content = """<?xml version="1.0"?>
-        <data>
-        </data>"""
+        content = """<?xml version="1.0"?><data></data>"""
         return ET.fromstring(content)
 
     def add_document(self, tag="post", name="1", args={}):
@@ -44,7 +43,6 @@ class DataHandler(object):
     def save(self):
         """ Save the current tree.
         """
-        print(self.data_file)
         ET.ElementTree(self.root).write(self.data_file)
     
     def divide_random(self, quota=0.5):
@@ -112,7 +110,6 @@ class DataHandler(object):
     def get(self, name):
         """ Find and return the value of name.
         """
-        print(self.root.find(name).text)
         return self.root.find(name).text
 
     def set_text(self, name, text):
@@ -125,3 +122,50 @@ class DataHandler(object):
             element=ET.Element(name)
             element.text=text
             self.root.append(element)
+    
+    def get_all(self, name):
+        """ Find and return the value of name.
+        """
+        return self.root.findall(name)
+
+    def print_sites(self):
+        """ mscan specific!
+        Print all the sites in the data
+        """
+        site_elements = self.root.findall(".site")
+        if len(site_elements) < 1:
+            print("No sites in data")
+            return
+        print("{:<18}URL".format("Name"))
+        for site_element in site_elements:
+            print("{:<18}{}".format(site_element.attrib["name"], site_element.find("url").text))
+        print()
+    
+    def print_companies(self):
+        """ mscan specific!
+        Print all the companies in the data
+        """
+        comp_elements = self.root.findall(".company")
+        if len(comp_elements) < 1:
+            print("No sites in data")
+            return
+        print("{:<18}#sightings".format("Name"))
+        for comp_element in comp_elements:
+            print("{:<18}{}".format(comp_element.attrib["name"], len(comp_element.getchildren())))
+        print()
+    
+    def get_company_data(self):
+        """ mscan specific!
+        Return company data
+        """
+        comp_elements = self.root.findall(".company")
+        comp_data = []
+        for comp_element in comp_elements:
+            dates = sorted([date.text for date in comp_element.findall("*//date")])
+            last = dates[0]
+            first = dates[-1]
+            dates = Counter(dates)
+            tickers = [ticker.text for ticker in comp_element.findall("*//ticker")]
+            comp_data.append({"name":comp_element.attrib["name"], "dates":dates, "first":first,
+                              "last":last, "tickers":tickers})
+        return comp_data

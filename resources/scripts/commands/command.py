@@ -18,8 +18,13 @@ class Command(object):
     def log(self, msg):
         """ Handles the logging and printouts.
         """
-        if self.verbose or self.log:
-            msg = "{}   {}   {}".format(str(datetime.now()), self.command, msg)
+        if self.verbose or self.logging:
+            time = datetime.now()
+            time_str = "{:02d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}.{}".format(time.year, time.month,
+                                                                             time.day, time.hour,
+                                                                             time.minute, time.second,
+                                                                             str(round(time.microsecond, 2))[:2])
+            msg = "{}   {}   {}".format(time_str, self.command, msg)
         if self.verbose:
             cols = shutil.get_terminal_size().columns
             if len(msg) > cols:
@@ -32,7 +37,12 @@ class Command(object):
     def error(self, msg, fatal=False):
         """ Handles error messages, exits the system is fatal is True.
         """
-        msg = "{}\t{}\tERROR\t{}".format(str(datetime.now()), self.command, msg)
+        time = datetime.now()
+        time_str = "{:02d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}.{}".format(time.year, time.month,
+                                                                         time.day, time.hour,
+                                                                         time.minute, time.second,
+                                                                         str(round(time.microsecond, 2))[:2])
+        msg = "{}\t{}\tERROR\t{}".format(time_str, self.command, msg)
         print(msg)
         if self.logging:
             print("logging not implemented yet")

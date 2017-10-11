@@ -1,0 +1,33 @@
+<data>
+    <site name="DN ekonomi">
+        <url>https://www.dn.se/ekonomi/</url>
+        <last_visited>2017-10-01-00:00:00</last_visited>
+    </site>
+    <site name="SvD n&#228;ringsliv">
+        <url>https://www.svd.se/naringsliv/</url>
+        <last_visited>2017-10-01-00:00:00</last_visited>
+    </site>
+    <site name="Aff&#228;rsv&#228;rlden">
+        <url>https://www.affarsvarlden.se/bors-ekonominyheter/</url>
+        <last_visited>2017-10-01-00:00:00</last_visited>
+    </site>
+
+    <company name="volvo">
+        <ticker>VOLVA</ticker>
+        <sighting>
+            <date>2017-10-01</date>
+            <time>00:00:00</time>
+            <site>DN ekonomi</site>
+            <url>https://www.dn.se/ekonomi/</url>
+        </sighting>
+    </company>
+    <company name="cloetta">
+        <ticker>CLAB</ticker>
+        <sighting>
+            <date>2017-10-01</date>
+            <time>00:00:00</time>
+            <site>DN ekonomi</site>
+            <url>https://www.dn.se/ekonomi/</url>
+        </sighting>
+    <sighting><date>2017-10-11</date><time>16:00:00</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/cloetta-lat-advokat-utreda-i-stallet-for-polisanmala/i/senaste/om/naringsliv</url></sighting><sighting><date>2017-10-11</date><time>16:00:00</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/cloetta-lat-advokat-utreda-i-stallet-for-polisanmala</url></sighting><sighting><date>2017-10-10</date><time>15:39:17</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/forundersokning-om-insiderbrott-pa-cloetta</url></sighting><sighting><date>2017-10-11</date><time>10:29:52</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/anhallna-cloettachefer-slappta--misstankarna-kvarstar</url></sighting><sighting><date>2017-10-11</date><time>11:16:00</time><site>DN ekonomi</site><url>https://www.dn.se/ekonomi/cloetta-chefer-slappta-fran-haktet/</url></sighting><sighting><date>2017-2-17</date><time>00:00:00</time><site>DN ekonomi</site><url>https://www.dn.se/ekonomi/ledande-cloetta-anstallda-frihetsberovade/</url></sighting><sighting><date>2017-10-11</date><time>17:00:00</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/gor-cloetta-det-ratta</url></sighting><sighting><date>2017-10-11</date><time>17:00:00</time><site>SvD n&#228;ringsliv</site><url>https://www.svd.se/gor-cloetta-det-ratta/i/senaste/om/naringsliv</url></sighting></company>
+</data>
